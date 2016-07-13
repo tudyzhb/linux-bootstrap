@@ -1,4 +1,5 @@
 #!/bin/bash
+# docker
 sudo tee /etc/yum.repos.d/docker.repo <<-'EOF'
 [dockerrepo]
 name=Docker Repository
@@ -7,3 +8,5 @@ enabled=1
 gpgcheck=1
 gpgkey=https://yum.dockerproject.org/gpg
 EOF
+sudo yum update
+sudo yum install -y docker-engine
