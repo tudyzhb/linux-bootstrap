@@ -13,6 +13,7 @@ sudo yum update
 sudo yum install -y docker-engine
 
 # docker config file
+sudo mkdir -p /data/docker/lib/docker
 sudo tee /etc/default/docker <<-'EOF'
 DOCKER_OPTS=" -g /data/docker/lib/docker/"
 EOF
