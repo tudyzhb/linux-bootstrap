@@ -1,6 +1,6 @@
 #!/bin/bash
 su - bitcoin
-wget https://bitcoin.org/bin/bitcoin-core-0.10.3/bitcoin-0.10.3-linux64.tar.gz
+wget https://bitcoin.org/bin/bitcoin-core-0.12.1/bitcoin-0.12.1-linux64.tar.gz
 tar -xzf *.tar.gz
 
 # callback
@@ -13,7 +13,8 @@ echo $1 $NOW >> log.txt
 EOF
 
 # bitcon conf
-tee .bitcoin/bitcoin.conf <<-'EOF'
+mkdir -p ~/.bitcoin
+tee ~/.bitcoin/bitcoin.conf <<-'EOF'
 rpcuser=bitcoinrpc
 rpcpassword=11111111112222222222333333333344444444445555
 rpcallowip=192.168.1.1/0
