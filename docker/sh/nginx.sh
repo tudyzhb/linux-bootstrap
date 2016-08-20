@@ -9,4 +9,5 @@ docker run --restart=always -d \
 -v /data/docker/con/nginx/conf.d:/etc/nginx/conf.d:ro \
 -v /data/docker/con/nginx/www:/var/www/html:ro \
 -v /data/docker/con/nginx/log:/var/log/nginx:rw \
+-v /etc/localtime:/etc/localtime:ro \
 nginx:stable

@@ -26,3 +26,6 @@ chmod 600 .bitcoin/bitcoin.conf
 
 # PATH
 # export PATH=$PATH:$HOME/bitcoin/bin
+
+# debug lib
+#yum install -y boost-devel libevent-devel libdb4-devel libdb4-cxx-devel
