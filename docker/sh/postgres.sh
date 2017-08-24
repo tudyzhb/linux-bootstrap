@@ -8,4 +8,4 @@ docker run -d \
 -e POSTGRES_PASSWORD=sergtsop \
 -v /data/docker/con/postgres/data:/var/lib/postgresql/data \
 -v /etc/localtime:/etc/localtime:ro \
-postgres:latest
+postgres:9.6
