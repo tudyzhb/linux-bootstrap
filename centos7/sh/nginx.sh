@@ -10,3 +10,9 @@ enabled=1
 EOF
 sudo yum update
 sudo yum install -y nginx
+# ws-proxy
+echo "nginx soft nofile 4096" > /etc/security/limits.d/nginx.conf
+echo "nginx hard nofile 65535" >> /etc/security/limits.d/nginx.conf
+# proxy
+semanage port -a -t http_port_t -p tcp 8080
+setsebool httpd_can_network_connect 1 -P
