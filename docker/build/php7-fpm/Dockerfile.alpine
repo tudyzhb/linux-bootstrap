@@ -1,0 +1,25 @@
+######
+# See: https://hub.docker.com/_/php/
+######
+
+FROM php:7.2-fpm-alpine
+
+######
+# You can install php extensions using docker-php-ext-install
+######
+
+# Install dependencies
+RUN set -ex; \
+    \
+    apk add --no-cache \
+        bzip2-dev \
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        libwebp-dev \
+        libxpm-dev \
+    ; \
+    \
+    docker-php-ext-install iconv; \
+    docker-php-ext-configure gd --with-freetype-dir=/usr --with-jpeg-dir=/usr --with-webp-dir=/usr --with-png-dir=/usr --with-xpm-dir=/usr; \
+    docker-php-ext-install bz2 gd mysqli opcache zip pdo pdo_mysql; \
