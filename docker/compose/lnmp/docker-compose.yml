@@ -13,6 +13,8 @@ nginx:
     # certificates
     # - ./nginx/ca/server.crt/:/etc/nginx/server.crt:ro
     # - ./nginx/ca/server.key/:/etc/nginx/server.key:ro
+  environment:
+    - TZ=${TZ}
   links:
     - fpm:fpm.php.host
     #- fpm:php
@@ -20,14 +22,14 @@ nginx:
 # php-fpm
 fpm:
   image: tudyzhb/php7-fpm:alpine
-  ports:
+  expose:
     - "9000"
   volumes:
     - ./html:/var/www/html
     # Your php.ini
     - ./php/php.ini:/usr/local/etc/php/php.ini:ro
-  # environment:
-    # Set your APP env variables here:
+  environment:
+    - TZ=${TZ}
     # - APP_KEY=
     # - DB_HOST=
     # - DB_DATABASE=
@@ -39,11 +41,21 @@ fpm:
 # database
 mysql:
   image: mysql:5.7
-  ports:
-    # Allow client to access 3306
-    - "3306"
+  #ports:
+  #  # Allow client to access 3306
+  #  - "127.0.0.1:3306:3306"
   volumes:
     # NOTE: your data will be stored in ./mysql
     - ./mysql:/var/lib/mysql
+    - ./sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
   environment:
+    - TZ=${TZ}
     - MYSQL_ROOT_PASSWORD=root
+
+## phpmyadmin
+#phpmyadmin:
+#  image: phpmyadmin/phpmyadmin
+#  ports:
+#    - "127.0.0.1:8088:80"
+#  links:
+#    - mysql:db
