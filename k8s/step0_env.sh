@@ -29,6 +29,7 @@ systemctl daemon-reload
 systemctl restart docker.service
 systemctl enable supervisord && systemctl start supervisord
 systemctl enable privoxy && systemctl start privoxy
+systemctl show --property Environment docker
 # firwall-cmd
 firewall-cmd --add-port=6443/tcp --permanent
 firewall-cmd --add-port=2379/tcp --permanent
