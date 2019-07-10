@@ -15,6 +15,14 @@ sudo tee /etc/docker/daemon.json <<-'EOF'
 }
 EOF
 
+# proxy
+mkdir -p /etc/systemd/system/docker.service.d
+sudo tee /etc/systemd/system/docker.service.d/proxy.conf <<-'EOF'
+[Service]
+Environment="HTTP_PROXY=http://127.0.0.1:8118/" "HTTPS_PROXY=http://127.0.0.1:8118/" "NO_PROXY=localhost,127.0.0.1,*.docker.io"
+EOF
+#systemctl show --property Environment docker
+
 # start
 systemctl enable docker.service
 systemctl start docker.service
