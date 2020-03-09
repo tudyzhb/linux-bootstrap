@@ -1,5 +1,4 @@
 #!/bin/bash
-curl -fsSL https://get.docker.com/ | sh
 
 # prerequisites
 yum install -y yum-utils \
