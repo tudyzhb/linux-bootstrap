@@ -1,51 +1,33 @@
 #!/bin/bash
+curl -fsSL https://get.docker.com/ | sh
 
-# docker
-sudo tee /etc/yum.repos.d/docker.repo <<-'EOF'
-[dockerrepo]
-name=Docker Repository
-baseurl=https://yum.dockerproject.org/repo/main/centos/7/
-enabled=1
-gpgcheck=1
-gpgkey=https://yum.dockerproject.org/gpg
-EOF
-sudo yum update
-sudo yum install -y docker-engine
+# prerequisites
+yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
 
-# docker config file
-sudo mkdir -p /data/docker/lib/docker
-sudo tee /etc/default/docker <<-'EOF'
-DOCKER_OPTS=" -g /data/docker/lib/docker/"
-EOF
+# repo
+yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+yum makecache fast
 
-sudo tee /usr/lib/systemd/system/docker.service <<-'EOF'
-[Unit]
-Description=Docker Application Container Engine
-Documentation=https://docs.docker.com
-After=network.target
+# install
+yum install -y docker-ce
 
-[Service]
-Type=notify
-# the default is not to use systemd for cgroups because the delegate issues still
-# exists and systemd currently does not support the cgroup feature set required
-# for containers run by docker
-EnvironmentFile=-/etc/default/docker
-ExecStart=/usr/bin/dockerd $DOCKER_OPTS
-ExecReload=/bin/kill -s HUP $MAINPID
-# Having non-zero Limit*s causes performance problems due to accounting overhead
-# in the kernel. We recommend using cgroups to do container-local accounting.
-LimitNOFILE=infinity
-LimitNPROC=infinity
-LimitCORE=infinity
-# Uncomment TasksMax if your systemd version supports it.
-# Only systemd 226 and above support this version.
-#TasksMax=infinity
-TimeoutStartSec=0
-# set delegate yes so that systemd does not reset the cgroups of docker containers
-Delegate=yes
-# kill only the docker process, not all processes in the cgroup
-KillMode=process
+# selinux
+mkdir -p /data
+semanage fcontext -a -t var_t /data
+restorecon -v /data
 
-[Install]
-WantedBy=multi-user.target
+# docker config
+sudo mkdir /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": [
+    "https://dockerhub.azk8s.cn",
+    "https://hub-mirror.c.163.com"
+  ],
+  "data-root": "/data/docker/lib/docker/"
+}
 EOF
