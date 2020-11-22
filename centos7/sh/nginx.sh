@@ -22,6 +22,8 @@ sudo tee /lib/systemd/system/nginx.service.d/worker_files_limit.conf <<-'EOF'
 [Service]
 LimitNOFILE=100000
 EOF
+mkdir -p /data/www
+chown -R nginx:nginx /data/www
 usermod -d /data/www nginx
 usermod -s /bin/bash nginx
 chcon -t httpd_var_lib_t /data/www
